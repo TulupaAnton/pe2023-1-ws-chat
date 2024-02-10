@@ -38,6 +38,17 @@ const initialState = {
 const messagesSlice = createSlice({
   name: MESSAGES_SLICE_NAME,
   initialState,
+  reducers: {
+    newMessageSuccess: (state, { payload }) => {
+      if (state.messages.length > state.limit) {
+        state.messages.splice(0, 12);
+      }
+      state.messages.push(payload);
+    },
+    newMessageError: (state, { payload }) => {
+      state.error = payload;
+    },
+  },
   extraReducers: builder => {
     // GET
     builder.addCase(getMessagesThunk.pending, state => {
@@ -72,6 +83,8 @@ const messagesSlice = createSlice({
   },
 });
 
-const { reducer } = messagesSlice;
+const { reducer, actions } = messagesSlice;
+
+export const { newMessageSuccess, newMessageError } = actions;
 
 export default reducer;
